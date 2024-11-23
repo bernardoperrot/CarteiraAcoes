@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Histórico {% endblock %}
+
+{% block content %}
+    <h1>Histórico</h1>
+    <form method="POST">
+        <label for="ticker">Selecione uma ação:</label>
+        <select name="ticker" id="ticker">
+            <option value="">-- Escolha um ticker --</option>
+            {% for acao in tickers %}
+                <option value="{{ acao.ticker }}">{{ acao.ticker }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>     
+    <table>
+        <thead>
+            <th>Ticker</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Tipo</th>
+        </thead>
+        {% for item in historico %}
+            <tr>
+                <td>{{item.ticker}}</td>
+                <td>{{item.quantidade}}</td>
+                <td>R$ {{item.preco}}</td>
+                <td>R$ {{item.valor}}</td>
+                <td>{{item.data}}</td>
+                <td>{{item.descricao}}</td>
+                <td>{{item.tipo}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+      
+
+{% endblock %}

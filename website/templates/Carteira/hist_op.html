@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %} Histórico Operações {% endblock %}
+
+{% block content %}
+    <h1>Histórico de Operações</h1>
+    <table>
+        <thead>
+            <th>Ticker</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Tipo</th>
+        </thead>
+        {% for item in historico %}
+            <tr>
+                <td>{{item.ticker}}</td>
+                <td>{{item.quantidade}}</td>
+                <td>R$ {{item.preco_pago}}</td>
+                <td>R$ {{item.valor_pago}}</td>
+                <td>{{item.data}}</td>
+                <td>{{item.descricao}}</td>
+                <td>{{item.tipo}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

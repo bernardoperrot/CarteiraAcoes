@@ -1,48 +1,65 @@
-:root{
-    --cor1: #D6D1D5;
-    --cor2: #F0F0F2;
-    --cor3: #7C8C03;
-    --cor4: #384001;
-    --cor5: #222601;
-    --fonte1: Verdana, Geneva, Tahoma, sans-serif;
-    --fonte2: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-body{
-    font-family: Arial, Helvetica, sans-serif
-}
-h1{
-    text-align: center;
-    padding: 50px;
-}
 table{
     border: 1px solid black;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 50px;
 }
-#cotacoes{
-    width: 100%;
-    margin-bottom: 0;
-}
-idiv{
-    margin-bottom: 100px;
-}
-form{
-    margin-bottom: 100px;
-}
-thead{
-    background-color: #808080;
-    color: white;
-    text-align: center;
-}
 td, th{
     text-align: center;
     border: 1px solid gray;
-    margin: 1px;
+    margin: 1px;    
     padding: 5px;
 }
-#ticker{
-    background-color: lightgreen;
+td.preco_acao {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #007bff; 
+    background-color: #f0f8ff; 
+    padding: 8px;
+    border: 1px solid #007bff; 
+    border-radius: 5px; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+td.preco_acao:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    td.preco_acao {
+        font-size: 1em;
+        padding: 6px;
+    }
+}
+
+table tr:hover {
+    background-color: silver; 
+    transition: background-color 0.3s ease; 
+}
+
+td.lucro:hover,
+td.prejuizo:hover,
+td.zero:hover {
+    background-color: inherit;
+}
+
+#grafico{
+    max-width: 400px;
+    max-height: 
+    400px; margin: auto;
+}
+#grafico2{
+    max-width: 600px;
+    max-height: 600px; 
+    margin: auto;
+}
+
+.positivo{
+    color:green;
+}
+.negativo{
+    color: red;
 }
 .lucro{
     background-color: lightgreen;
@@ -50,142 +67,3 @@ td, th{
 .prejuizo{
     background-color: red;
 }
-.positivo{
-    color: green;
-}
-.negativo{
-    color: red;
-}
-.auth{
-    margin-left: 100px;
-    margin-right: 100px;
-}
-.preco_acao{
-    font-size: 1.3em;
-    font-weight: bold;
-}
-.result{
-    border-top: 2px solid black;
-}
-footer{
-    background-color: var(--cor4);
-    color:white;
-    text-align: center;
-    font-size: 0.8em;
-
-}
-footer a{
-    color: white;
-    font-weight: bolder;
-    text-decoration: none;
-}
-footer a:hover{
-    text-decoration: underline;
-    color:var(--cor1)
-}
-.fixarRodape {
-    bottom: 0;
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    height: 20px;
-}
-#grafico{
-    background-color: #222601;
-    width: 50%;
-    margin: auto;
-    height: 100px;
-}
-.filtro{
-    align-items: center;
-    text-align: center;
-    margin: auto;
-    margin-bottom: 20px;
-}
-
-/* css */
-
-/* body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    width: 80%;
-    margin: 0 auto;
-}
-
-h1 {
-    color: #333;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.filtro {
-    margin-bottom: 20px;
-}
-
-.filtro label {
-    font-weight: bold;
-}
-
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: #45a049;
-}
-
-.lucro {
-    color: green;
-    font-weight: bold;
-}
-
-.prejuizo {
-    color: red;
-    font-weight: bold;
-}
-
-.zero {
-    color: gray;
-    font-weight: bold;
-}
-
-.result {
-    font-weight: bold;
-}
-
-img {
-    display: block;
-    margin: 20px auto;
-    max-width: 100%;
-    height: auto;
-} */

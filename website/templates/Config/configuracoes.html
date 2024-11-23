@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} Configurações {% endblock %}
+
+{% block content %}
+    <h1>Configurações</h1>
+    <h2>Desdobramento ou grupamento</h2>
+    <form method="POST">
+        <label for="calc">Desdobramento ou grupamento</label>
+        <select name="tipo" id="">
+            <option value="">-- Escolha uma opção --</option>
+            <option value="desdobramento">Desdobramento</option>
+            <option value="grupamento">Grupamento</option>
+        </select>
+        <label for="ticker">Selecione uma ação:</label>
+        <select name="ticker" id="ticker">
+            <option value="">-- Escolha um ticker --</option>
+            {% for acao in tickers %}
+                <option value="{{ acao.ticker }}">{{ acao.ticker }}</option>
+            {% endfor %}
+        </select>
+        <label for="">Proporção (1 para x ou x para 1)</label>
+        <input name="proporcao" type="number" placeholder="x">
+        <button type="submit">Aplicar</button>
+    </form>
+{% endblock %}

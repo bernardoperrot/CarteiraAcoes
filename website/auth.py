@@ -1,14 +1,15 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user
-from datetime import datetime
+from flask_migrate import Migrate
+
+from .models import Usuario, Carteira
 from website import db
-from .models import *
+
 auth = Blueprint('auth', __name__)
 
-@auth.route('/login', methods= ['GET', 'POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
-
     if request.method == 'POST':
         email = request.form.get('email')
         senha = request.form.get('senha')
@@ -16,29 +17,22 @@ def login():
         usuario = Usuario.query.filter_by(email=email).first()
 
         if usuario:
-            if usuario.senha == senha:
+            if check_password_hash(usuario.senha, senha):
                 flash("Login efetuado!", category='success')
                 login_user(usuario, remember=True)
-                # carteira_stock = CarteiraStock(usuario_id = usuario.id, valor_pago_total = 0, valor_atual_total = 0, lucro_prejuizo = 0, rentabilidade_total = 0, status = "zero", total_dividendos = 0)
-                # db.session.add(carteira_stock)
-                # db.session.commit()
-                
                 return redirect(url_for('views.home'))
-
-
             else:
                 flash("Senha incorreta. Tente novamente.", category='error')
         else:
             flash('Email não existe!', category='error')
     
-    return render_template("auth/login.html")
-
+    return render_template("login.html")
+    
 @auth.route('/logout')
 def logout():
-    logout_user()
     return redirect(url_for('auth.login'))
 
-@auth.route('/sign-up', methods=['GET','POST'])
+@auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -58,18 +52,15 @@ def sign_up():
         elif len(senha) < 7:
             flash('Senha deve ter pelo menos 7 caracteres', category='error')
         else:
-            current_time = datetime.now()
-            usuario = Usuario(email=email, nome = nome, senha = senha)
+            usuario = Usuario(email=email, nome = nome, senha = generate_password_hash(senha,
+                                method='pbkdf2'))
             db.session.add(usuario)
             db.session.commit()
-            carteira_acoes = CarteiraAcoes(usuario_id = usuario.id, valor_pago_total = 0, valor_atual_total = 0, lucro_prejuizo = 0, rentabilidade_total = 0, status = "zero", total_dividendos = 0)
-            carteira_cripto = CarteiraCripto(usuario_id = usuario.id, valor_pago_total = 0, valor_atual_total = 0, lucro_prejuizo = 0, rentabilidade_total = 0, status = "zero")
-            carteira_stock = CarteiraStock(usuario_id = usuario.id, valor_pago_total = 0, valor_atual_total = 0, lucro_prejuizo = 0, rentabilidade_total = 0, status = "zero", total_dividendos = 0)
-            db.session.add(carteira_acoes)
-            db.session.add(carteira_cripto)
-            db.session.add(carteira_stock)
+            carteira = Carteira(usuario_id = usuario.id)
+            db.session.add(carteira)
             db.session.commit()
+            login_user(usuario, remember=True)
             flash('Conta criada!', category='success')
             return redirect(url_for('views.home'))
-
-    return render_template("auth/sign_up.html")
+        
+    return render_template("sign_up.html")

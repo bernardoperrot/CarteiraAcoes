@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %} Dividendos {% endblock %}
+
+{% block content %}
+    <h1>Dividendos</h1>
+    <form method="POST">
+        <label for="ticker">Selecione uma ação:</label>
+        <select name="ticker" id="ticker">
+            <option value="">-- Escolha um ticker --</option>
+            {% for acao in tickers %}
+                <option value="{{ acao.ticker }}">{{ acao.ticker }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+    {% if acao != None %}
+        <h3>Total R$ {{acao.total_dividendos}}, retorno: {{acao.retorno_dividendos}} %</h3>
+        <div id="grafico2">
+            <canvas id="myChart"></canvas>
+        </div>
+          
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          
+        <script>
+            const ctx = document.getElementById('myChart');
+          
+            new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: ['Valor Aplicado', 'Retorno Dividendos'],
+                datasets: [{
+                  label: 'Valor R$',
+                  data: [{{acao.valor_pago}},{{acao.total_dividendos}} ],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
+              }
+            });
+        </script>
+    {% else %}
+        <h3>Total R$ {{carteira.total_dividendos}}, retorno: {{carteira.retorno_dividendos}} %</h3>
+        <div id="grafico2">
+            <canvas id="myChart"></canvas>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <script>
+            const ctx = document.getElementById('myChart');
+        
+            new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Valor Aplicado', 'Retorno Dividendos'],
+                datasets: [{
+                label: 'Valor R$',
+                data: [{{carteira.valor_pago}},{{carteira.total_dividendos}} ],
+                borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                y: {
+                    beginAtZero: true
+                }
+                }
+            }
+            });
+    </script>
+          
+    {% endif %}
+    <table>
+        <thead>
+            <th>Ticker</th>
+            <th>Quantidade</th>
+            <th>Valor por Ação</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Yield On Cost</th>
+        </thead>
+        {% for div in dividendos %}
+            <tr>
+                <td>{{div.ticker}}</td>
+                <td>{{div.quantidade}}</td>
+                <td>R$ {{div.valor_por_acao}}</td>
+                <td>R$ {{div.valor}}</td>
+                <td>{{div.data}}</td>
+                <td>{{div.cash_yield}} %</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Homepage {% endblock %}
+
+{% block content %}
+    <h1>Cotações</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Mercado</th>
+                <th>Cotação Atual</th>
+                <th>Variação (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cotacao in tickers %}
+                <tr>
+                    <td>{{ cotacao.ticker }}</td>
+                    <td>{{ cotacao.mercado }}</td>
+                    <td>R$ {{ cotacoes[cotacao.ticker] }}</td>
+                    <td>{{ variacoes[cotacao.ticker] }} %</td>
+                    <td><a href="" class="btn btn-danger">remove</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <form method="POST" class="auth">
+        <div class="form-group">
+            <label for="ticker">Ticker: </label>
+            <input type="text" name="ticker" required class="form-control">
+        </div>
+        <label for="mercado">Selecione um mercado:</label>
+        <select name="mercado" id="">
+            <option value="acao">Ação</option>
+            <option value="stock">Stock</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+    </form>
+{% endblock %}

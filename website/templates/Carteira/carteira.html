@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %} Carteira {% endblock %}
+
+{% block content %}
+    <h1>Carteira de Ações</h1>
+    <table class="">
+        <thead>
+            <th>Ticker</th>
+            <th>Preço Médio</th>
+            <th>Quantidade</th>
+            <th>Valor Pago</th>
+            <th>Data Compra</th>
+            <th>Cotação Atual</th>
+            <th>Valor Atual</th>
+            <th>Peso</th>
+            <th>Lucro/Prejuízo</th>
+            <th>Rentabilidade</th>
+            <th><a class="btn btn-success" href="/atualizar-carteira">Atualizar</a></th>
+        </thead>
+        {% for acao in acoes %}
+            <tr>
+                {% if acao.status == "lucro" %}
+                    <td class="lucro">{{ acao.ticker }}</td>
+                {% elif acao.status == "zero" %}
+                    <td class="zero">{{ acao.ticker }}</td>
+                {% else %}
+                    <td class="prejuizo">{{ acao.ticker }}</td>
+                {% endif %}
+                <td>R$ {{ acao.preco_medio }}</td>
+                <td>{{ acao.quantidade }}</td>
+                <td>R$ {{ acao.valor_pago }}</td>
+                <td>{{ acao.data_compra_inicial}}</td>
+                <td class="preco_acao">R$ {{ acao.preco_atual }}</td>
+                <td>R$ {{ acao.valor_atual }}</td>
+                <td>{{acao.peso}} %</td>
+                {% if acao.status == "lucro" %}
+                    <td class="lucro">R$ {{ acao.lucro_prejuizo  }}</td>
+                    <td class="lucro">{{ acao.rentabilidade }}% </td>
+                {% elif acao.status == "zero" %}
+                    <td class="zero">R$ {{ acao.lucro_prejuizo  }}</td>
+                    <td class="zero">{{ acao.rentabilidade }}% </td>
+                {% else %}
+                    <td class="prejuizo">R$ {{ acao.lucro_prejuizo  }}</td>
+                    <td class="prejuizo">{{ acao.rentabilidade }}% </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        <tfoot>
+            <tr class="result">
+                <td>Total</td>
+                <td>-</td>
+                <td>-</td>
+                <td>R$ {{carteira.valor_pago}}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>R$ {{carteira.valor_atual}}</td>
+                <td>-</td>
+                {% if carteira.status == "lucro" %}
+                    <td class="lucro">R$ {{carteira.lucro_prejuizo}}</td>
+                    <td class="lucro">{{carteira.rentabilidade}} %</td>
+                {% elif carteira.status == zero %}
+                    <td class="zero">R$ {{carteira.lucro_prejuizo}}</td>
+                    <td class="zero">{{carteira.rentabilidade}} %</td>
+                {% else %}
+                    <td class="prejuizo">R$ {{carteira.lucro_prejuizo}}</td>
+                    <td class="prejuizo">{{carteira.rentabilidade}} %</td>
+                {% endif %}
+            </tr>
+        </tfoot>
+    </table>
+    <script>
+        
+    </script>
+    <div id="grafico">
+        <canvas id="myPieChart"></canvas>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        var labels = [];
+        var data = [];
+    
+        {% for acao in acoes %}
+            labels.push("{{ acao.ticker }}");
+            data.push("{{ acao.peso }}");
+        {% endfor %}
+
+        function getRandomColor() {
+            let letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        var backgroundColors = [];
+    
+        for (let i = 0; i < labels.length; i++) {
+            backgroundColors.push(getRandomColor());
+        }
+    
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    </script>
+
+    <h1>Dividendos</h1>
+    <table class="">
+        <thead>
+            <th>Ticker</th>
+            <th>Quantidade</th>
+            <th>Data Primeira Compra</th>
+            <th>Ultimo Dividendo</th>
+            <th>Data Último Dividendo</th>
+            <th>Total Dividendos</th>
+            <th>Yield On Cost</th>
+            <th><a class="btn btn-success" href="/atualiza-dividendos">Atualizar</a></th>
+        </thead>
+        {% for acao in dividendos %}
+            <tr>
+                <td id="ticker">{{ acao.ticker }}</td>
+                <td>{{ acao.quantidade }}</td>
+                <td>{{ acao.data_compra_inicial}}</td>
+                <td>R$ {{acao.last_dividend}}</td>
+                <td>{{acao.data_ultimo_dividendo}}</td>
+                <td>R$ {{acao.total_dividendos}}</td>
+                <td>{{acao.retorno_dividendos}} %</td>
+            </tr>
+        {% endfor %}
+        <tfoot>
+            <tr class="result">
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>R$ {{carteira.total_dividendos}}</td>
+                <td>{{carteira.retorno_dividendos}} %</td>
+            </tr>
+        </tfoot>
+    </table>
+{% endblock %}

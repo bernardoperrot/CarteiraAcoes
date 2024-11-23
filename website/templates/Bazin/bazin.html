@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %} Preço Teto Bazin {% endblock %}
+
+{% block content %}
+    <h1>Preço Teto Decio Bazin</h1>
+    <form method="POST" class="auth">
+        <div class="form-group">
+            <label for="ticker">Ticker: </label>
+            <input type="text" name="ticker" required class="form-control">
+        </div>
+        <label for="ticker">Anos:</label>
+        <select name="anos" id="ticker">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Calcular</button>
+    </form>
+
+    {% if ticker != None %}
+        <h2>Em Reais</h2>
+        <table>
+            <thead>
+                <th>Ticker</th>
+                <th>Cotação</th>
+                <th>Preço Teto</th>
+                <th>Dividendos no ultimos {{anos}} anos</th>
+                <!-- <th>Data</th> -->
+                <th>Yield</th>
+                <th>Margem de segurança</th>
+                <th>Gráfico</th>
+                <th>Fundamentos</th>
+            </thead>
+            <tr>
+                <td>{{ticker}}</td>
+                <td>R$ {{cotacao_ativo}}</td>
+                <td>R$ {{preco_teto}}</td>
+                <td>R$ {{total_dividendos}}</td>
+                <td>{{cash_yield}} %</td>
+                <td>{{margem_seguranca}} %</td>
+                <td><a target="_blank" href="{{link_grafico}}">TradingView</a></td>
+                <td><a target="_blank" href="{{link_investidor10}}">Investidor10    </a></td>
+            </tr>
+        </table>
+        <h2>Em Dolares</h2>
+        <table>
+            <thead>
+                <th>Ticker</th>
+                <th>Cotação Dolar</th>
+                <th>Preço Teto</th>
+                <th>Dividendos</th>
+                <th>Yield</th>
+                <th>Margem de segurança</th>
+            </thead>
+            <tr>
+                <td>{{ticker}}</td>
+                <td>R$ {{cotacao_dolar}}</td>
+                <td>R$ {{preco_teto_dolar}}</td>
+                <td>$ {{total_dividendos_dolar}}</td>
+                <td>{{cash_yield_dolar}} %</td>
+                <td>{{margem_seguranca_dolar}} %</td>
+            </tr>
+        </table>
+    {% endif %}
+{% endblock %}

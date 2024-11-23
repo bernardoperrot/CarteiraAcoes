@@ -1,5 +1,5 @@
-from os import path
 from flask import Flask
+from os import path
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -10,7 +10,6 @@ DB_NAME = "database.db"
 admin = Admin()
 
 def create_app():
-
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'você não vai advinhar'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
@@ -24,7 +23,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import Usuario, Acao
+    from .models import Usuario
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -34,14 +33,14 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return Usuario.query.get(int(id))
-
+    
     create_database(app)
 
-    return app
 
+    return app
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
         with app.app_context():
             db.create_all()
-            print('Banco de dados criado.')
+            print('Created Database!')

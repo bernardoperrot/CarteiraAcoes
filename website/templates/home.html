@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %} Homepage {% endblock %}
 
 {% block content %}
     <h1>Home</h1>
@@ -9,26 +9,46 @@
             <th>Usuário</th>
             <th>Nome</th>
             <th>E-mail</th>
-            <!-- <th>Senha</th> -->
-            <th>Saldo total</th>
             <th>Total Carteira de Ações</th>
             <th>Total Dividendos</th>
-            <th>Total Carteira Cripto</th>
-            <th>Total Carteira Cripto</th>
-            <th>Total Carteira Stock</th>
         </thead>
         <tr>
             <td>{{usuario}}</td>
             <td>{{usuario.nome}}</td>
             <td>{{usuario.email}}</td>
-            <!-- <td>{{usuario.senha}}</td> -->
-            <td>R$ {{total}}</td>
-            <td>R$ {{total_acoes}}</td>
-            <td>R$ {{total_dividendos}}</td>
-            <td>$ {{total_cripto}}</td>
-            <td>R$ {{total_cripto_real}}</td>
-            <td>$ {{total_carteira_stock}}</td>
+            <td>R$ {{total_carteira.valor_atual}}</td>
+            <td>R$ {{total_carteira.total_dividendos}}</td>
         </tr>
     </table>
-
+    <table>
+        <thead>>
+            <th>Cotação Dolar</th>
+            <th>Cotação IBOV</th>
+            <th>Cotação BTC</th>
+        </thead>
+        <tr>
+        {% if dif_dolar > 0 %}
+            <td>$ Cotação Dolar: R$ {{cotacao_dolar}} <span class="positivo">{{dif_dolar}} %</span></td>
+        {% elif dif_dolar == 0 %}
+            <td>$ Cotação Dolar: R$ {{cotacao_dolar}} <span class="nulo">{{dif_dolar}} %</span></td>
+        {% else %}
+            <td>$ Cotação Dolar: R$ {{cotacao_dolar}} <span class="negativo">{{dif_dolar}} %</span></td>
+        {% endif %}
+        {% if dif_ibov > 0 %}
+          <td>Cotação IBOV: {{cotacao_ibov}} pontos <span class="positivo">{{dif_ibov}} %</span></td>
+        {% elif dif_ibov == 0 %}
+          <td>Cotação IBOV: {{cotacao_ibov}} pontos <span class="nulo">{{dif_ibov}} %</span></td>
+        {% else %}
+          <td>Cotação IBOV: {{cotacao_ibov}} pontos <span class="negativo">{{dif_ibov}} %</span></td>
+        {% endif %}
+        {% if dif_btc > 0 %}
+          <td>Cotação Bitcoin: $ {{cotacao_btc}} <span class="positivo">{{dif_btc}} %</span></td>
+        {% elif dif_btc == 0 %}
+          <td class="nulo">Cotação Bitcoin: $ {{cotacao_btc}} <span class="nulo">{{dif_btc}} %</span></td>
+        {% else %}
+          <td>Cotação Bitcoin: $ {{cotacao_btc}} <span class="negativo">{{dif_btc}} %</span></td>
+        {% endif %}
+            </td>
+        </tr>
+    </table>
 {% endblock %}
