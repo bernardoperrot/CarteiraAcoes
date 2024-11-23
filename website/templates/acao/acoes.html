@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h1>Carteira de Ações</h1>
+    <table class="">
+        <thead>
+            <th>Ticker</th>
+            <th>Preço Médio</th>
+            <th>Quantidade</th>
+            <th>Valor Pago</th>
+            <th>Data Compra</th>
+            <th>Cotação atual</th>
+            <th>Valor Atual</th>
+            <th>Peso</th>
+            <th>Lucro/Prejuízo</th>
+            <th>Rentabilidade</th>
+            <th>Gráfico</th>
+            <th>Fundamentos</th>
+            <th><a class="btn btn-success" href="/atualiza-Acoes">Atualizar</a></th>
+        </thead>
+        {% for acao in acoes %}
+            <tr>
+                {% if acao.status == "lucro" %}
+                    <td class="lucro">{{ acao.ticker }}</td>
+                {% elif acao.status == "zero" %}
+                    <td class="zero">{{ acao.ticker }}</td>
+                {% else %}
+                    <td class="prejuizo">{{ acao.ticker }}</td>
+                {% endif %}
+                <td>R$ {{ acao.preco_medio }}</td>
+                <td>{{ acao.quantidade }}</td>
+                <td>R$ {{ acao.valor_pago }}</td>
+                <td>{{ acao.data_compra_inicial}}</td>
+                <td class="preco_acao">R$ {{ acao.preco_atual }}</td>
+                <td>R$ {{ acao.valor_atual }}</td>
+                <td>{{acao.peso}} %</td>
+                {% if acao.status == "lucro" %}
+                    <td class="lucro">R$ {{ acao.lucro_prejuizo  }}</td>
+                    <td class="lucro">{{ acao.rentabilidade }}% </td>
+                {% elif acao.status == "zero" %}
+                    <td class="zero">R$ {{ acao.lucro_prejuizo  }}</td>
+                    <td class="zero">{{ acao.rentabilidade }}% </td>
+                {% else %}
+                    <td class="prejuizo">R$ {{ acao.lucro_prejuizo  }}</td>
+                    <td class="prejuizo">{{ acao.rentabilidade }}% </td>
+                {% endif %}
+                <td><a target="_blank" href="{{acao.link}}">TradingView</a></td>
+                <td><a target="_blank" href="{{acao.link_investidor10}}">Investidor10</a></td>
+            </tr>
+        {% endfor %}
+        {% for valor in usuario.carteira_acoes %}
+            <tfoot>
+                <tr class="result">
+                    <td>Total</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>R$ {{valor.valor_pago_total}}</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>R$ {{valor.valor_atual_total}}</td>
+                    <td>-</td>
+                    {% if valor.status == "lucro" %}
+                        <td class="lucro">R$ {{valor.lucro_prejuizo}}</td>
+                        <td class="lucro">{{valor.rentabilidade_total}} %</td>
+                    {% elif valor.status == zero %}
+                        <td class="zero">R$ {{valor.lucro_prejuizo}}</td>
+                        <td class="zero">{{valor.rentabilidade_total}} %</td>
+                    {% else %}
+                        <td class="prejuizo">R$ {{valor.lucro_prejuizo}}</td>
+                        <td class="prejuizo">{{valor.rentabilidade_total}} %</td>
+                    {% endif %}
+                    <td>{{valor.last_update}}</td>
+                </tr>
+            </tfoot>
+        {% endfor %}
+    </table>
+    </table>
+    <h1>Dividendos</h1>
+    <table class="idiv">
+        <thead>
+            <th>Ticker</th>
+            <th>Quantidade</th>
+            <th>Data Primeira Compra</th>
+            <th>Ultimo Dividendo</th>
+            <th>Data Último Dividendo</th>
+            <th>Total Dividendos</th>
+            <th>Yield On Cost</th>
+            <th><a class="btn btn-success" href="/atualiza-Dividendos">Atualizar</a></th>
+        </thead>
+        {% for acao in dividendos %}
+            <tr>
+                <td id="ticker">{{ acao.ticker }}</td>
+                <td>{{ acao.quantidade }}</td>
+                <td>{{ acao.data_compra_inicial}}</td>
+                <td>R$ {{acao.last_dividend}}</td>
+                <td>{{acao.data_ultimo_provento}}</td>
+                <td>R$ {{acao.total_dividends}}</td>
+                <td>{{acao.yield_total}} %</td>
+            </tr>
+        {% endfor %}
+        {% for valor in usuario.carteira_acoes %}
+            <tfoot>
+                <tr class="result">
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>R$ {{valor.total_dividendos}}</td>
+                    <td>{{valor.retorno_dividendos}} %</td>
+                </tr>
+            </tfoot>
+        {% endfor %}
+    </table>
+{% endblock %}

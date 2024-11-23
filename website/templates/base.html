@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} tabela {% endblock %}</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" 
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Home</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+        {% if usuario %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Ações
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/view-dividendos">Pesquisar</a>
+              <a class="dropdown-item" href="/watch-list">Watch List</a>
+              <a class="dropdown-item" href="/acoes">Carteira</a>
+              <a class="dropdown-item" href="/add-acao">Adicionar</a>
+              <a class="dropdown-item" href="/rm-acao">Remover</a>
+              <a class="dropdown-item" href="/hist-acao">Histórico</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Cripto
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/cryptos">Carteira</a>
+              <a class="dropdown-item" href="/add-cripto">Adicionar</a>
+              <a class="dropdown-item" href="/rm-cripto">Remover</a>
+              <a class="dropdown-item" href="/hist-cripto">Histórico</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Stock
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/stock">Carteira</a>
+              <a class="dropdown-item" href="/add-stock">Adicionar</a>
+              <a class="dropdown-item" href="/rm-stock">Remover</a>
+              <a class="dropdown-item" href="/hist-stock">Histórico</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="/sign-up">Sign-up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        {% endif %}
+        </ul>
+      </div>
+    </nav>
+    {% if usuario %}
+      <table id="cotacoes">
+        <tr>
+          {% if g.dif_dolar > 0 %}
+            <td>$ Cotação Dolar: R$ {{g.cotacao_dolar}} <span class="positivo">{{g.dif_dolar}} %</span></td>
+          {% elif g.dif_dolar == 0 %}
+            <td>$ Cotação Dolar: R$ {{g.cotacao_dolar}} <span class="nulo">{{g.dif_dolar}} %</span></td>
+          {% else %}
+            <td>$ Cotação Dolar: R$ {{g.cotacao_dolar}} <span class="negativo">{{g.dif_dolar}} %</span></td>
+          {% endif %}
+          {% if g.dif_ibov > 0 %}
+            <td>Cotação IBOV: {{g.cotacao_ibov}} pontos <span class="positivo">{{g.dif_ibov}} %</span></td>
+          {% elif g.dif_ibov == 0 %}
+            <td>Cotação IBOV: {{g.cotacao_ibov}} pontos <span class="nulo">{{g.dif_ibov}} %</span></td>
+          {% else %}
+            <td>Cotação IBOV: {{g.cotacao_ibov}} pontos <span class="negativo">{{g.dif_ibov}} %</span></td>
+          {% endif %}
+          {% if g.dif_btc > 0 %}
+            <td>Cotação Bitcoin: $ {{g.cotacao_btc}} <span class="positivo">{{g.dif_btc}} %</span></td>
+          {% elif g.dif_btc == 0 %}
+            <td class="nulo">Cotação Bitcoin: $ {{g.cotacao_btc}} <span class="nulo">{{g.dif_btc}} %</span></td>
+          {% else %}
+            <td>Cotação Bitcoin: $ {{g.cotacao_btc}} <span class="negativo">{{g.dif_btc}} %</span></td>
+          {% endif %}
+        </tr>
+      </table>
+    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages %}
+          {% for category, message in messages %}
+            {% if category == 'error' %}
+              <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% else %}
+              <div class="alert alert-success alter-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    {% block content %}
+    {% endblock %}
+    <footer class="fixarRodape">
+      <p>Site criado por <a href="https://github.com/BernardoPerrotIFSC">Bernardo Perrot</a></p>    
+    </footer>
+    <script src="../static/index.js"></script>
+</body>
+</html>
